@@ -3,16 +3,31 @@
 
     <declare-styleable name="FaceOffToggleButton">
 
-        <attr name="backgroundColor" format="color|reference"/>
-        <attr name="leftBackgroundColor" format="color|reference"/>
-        <attr name="rightBackgroundColor" format="color|reference"/>
-        <attr name="leftFaceColor" format="color|reference"/>
-        <attr name="rightFaceColor" format="color|reference"/>
-        <attr name="faceLeftMargin" format="dimension|reference"/>
-        <attr name="faceRightMargin" format="dimension|reference"/>
-        <attr name="faceTopMargin" format="dimension|reference"/>
-        <attr name="faceBottomMargin" format="dimension|reference"/>
-        <attr name="duration" format="integer|reference"/>
+        <attr name="foBackgroundColor" format="color|reference"/>
+        <attr name="foLeftBackgroundColor" format="color|reference"/>
+        <attr name="foRightBackgroundColor" format="color|reference"/>
+        <attr name="foLeftFaceColor" format="color|reference"/>
+        <attr name="foRightFaceColor" format="color|reference"/>
+        <attr name="foLeftEyeColor" format="color|reference"/>
+        <attr name="foRightEyeColor" format="color|reference"/>
+        <attr name="foLeftMouthColor" format="color|reference"/>
+        <attr name="foRightMouthColor" format="color|reference"/>
+
+        <attr name="foFaceRadius" format="dimension|reference"/>
+        <attr name="foWidthRadiusRatio" format="float|reference"/>
+        <attr name="foFaceMargin" format="dimension|reference"/>
+
+        <attr name="foDuration" format="integer|reference"/>
+
+        <attr name="foMoveToSameStateCallListener" format="boolean|reference"/>
+        <attr name="foDraggable" format="boolean|reference"/>
+
+        <attr name="foColorChangeType" format="enum">
+            <enum name="rgb" value="0"/>
+            <enum name="hsv" value="1"/>
+        </attr>
+
+        <attr name="foTouchMoveRatioValue" format="float|reference"/>
 
     </declare-styleable>
 

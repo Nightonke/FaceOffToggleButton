@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,13 +8,223 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@android:color/white"
+    android:orientation="vertical"
     tools:context="com.nightonke.faceofftogglebuttonexample.MainActivity">
 
-    <com.nightonke.faceofftogglebutton.FaceOffToggleButton
-        android:id="@+id/fotb"
-        android:layout_width="wrap_content"
+    <TableLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        />
+        android:stretchColumns="*"
+        >
 
-</RelativeLayout>
+        <TableRow>
+
+            <com.nightonke.faceofftogglebutton.FaceOffToggleButton
+                android:id="@+id/fotb_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                />
+
+            <com.nightonke.faceofftogglebutton.FaceOffToggleButton
+                android:id="@+id/fotb_1"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                />
+
+            <com.nightonke.faceofftogglebutton.FaceOffToggleButton
+                android:id="@+id/fotb_2"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                />
+
+        </TableRow>
+
+    </TableLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="20dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Listener"
+                android:textSize="22sp"
+                android:layout_marginTop="20dp"
+                android:textColor="@android:color/black"
+                />
+
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="?android:attr/progressBarStyleHorizontal"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Check"
+                android:textSize="22sp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:textColor="@android:color/black"
+                />
+
+            <Button
+                android:id="@+id/set_check_with_listener"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="With Listener"
+                />
+
+            <Button
+                android:id="@+id/set_check_without_listener"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Without Listener"
+                />
+
+            <Button
+                android:id="@+id/set_check_immediately_with_listener"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Immediately With Listener"
+                />
+
+            <Button
+                android:id="@+id/set_check_immediately_without_listener"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Immediately Without Listener"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Toggle"
+                android:textSize="22sp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:textColor="@android:color/black"
+                />
+
+            <Button
+                android:id="@+id/toggle_with_listener"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="With Listener"
+                />
+
+            <Button
+                android:id="@+id/toggle_without_listener"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Without Listener"
+                />
+
+            <Button
+                android:id="@+id/toggle_immediately_with_listener"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Immediately With Listener"
+                />
+
+            <Button
+                android:id="@+id/toggle_immediately_without_listener"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Immediately Without Listener"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Color"
+                android:textSize="22sp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:textColor="@android:color/black"
+                />
+
+            <Button
+                android:id="@+id/background_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Background Color"
+                />
+
+            <Button
+                android:id="@+id/left_background_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Left Background Color"
+                />
+
+            <Button
+                android:id="@+id/right_background_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Right Background Color"
+                />
+
+            <Button
+                android:id="@+id/left_face_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Left Face Color"
+                />
+
+            <Button
+                android:id="@+id/right_face_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Right Face Color"
+                />
+
+            <Button
+                android:id="@+id/left_eye_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Left Eye Color"
+                />
+
+            <Button
+                android:id="@+id/right_eye_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Right Eye Color"
+                />
+
+            <Button
+                android:id="@+id/left_mouth_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Left Mouth Color"
+                />
+
+            <Button
+                android:id="@+id/right_mouth_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Right Mouth Color"
+                />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

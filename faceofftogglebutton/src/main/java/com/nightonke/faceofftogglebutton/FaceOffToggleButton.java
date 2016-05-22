@@ -34,8 +34,8 @@ public class FaceOffToggleButton extends CompoundButton {
     private static final int DEFAULT_RIGHT_FACE_COLOR = Color.parseColor("#FFFFFF");
     private static final int DEFAULT_LEFT_EYE_COLOR = Color.parseColor("#D3CFCF");
     private static final int DEFAULT_RIGHT_EYE_COLOR = Color.parseColor("#49B6EB");
-    private static final int DEFAULT_LEFT_MONTH_COLOR = Color.parseColor("#D3CFCF");
-    private static final int DEFAULT_RIGHT_MONTH_COLOR = Color.parseColor("#49B6EB");
+    private static final int DEFAULT_LEFT_MOUTH_COLOR = Color.parseColor("#D3CFCF");
+    private static final int DEFAULT_RIGHT_MOUTH_COLOR = Color.parseColor("#49B6EB");
 
     private static final int DEFAULT_FACE_RADIUS_DP = 15;
     private static final float DEFAULT_WIDTH_RADIUS_RATIO = 2f;
@@ -58,8 +58,8 @@ public class FaceOffToggleButton extends CompoundButton {
     private int mRightFaceColor = DEFAULT_RIGHT_FACE_COLOR;
     private int mLeftEyeColor = DEFAULT_LEFT_EYE_COLOR;
     private int mRightEyeColor = DEFAULT_RIGHT_EYE_COLOR;
-    private int mLeftMouthColor = DEFAULT_LEFT_MONTH_COLOR;
-    private int mRightMouthColor = DEFAULT_RIGHT_MONTH_COLOR;
+    private int mLeftMouthColor = DEFAULT_LEFT_MOUTH_COLOR;
+    private int mRightMouthColor = DEFAULT_RIGHT_MOUTH_COLOR;
 
     private float mFaceRadius = -1;
     private float mWidthRadiusRatio = -1;
@@ -79,18 +79,20 @@ public class FaceOffToggleButton extends CompoundButton {
 
     private float mProcess;
 
-    private float eyeCenterMarginRatio = 0.2f;
-    private float eyeWidthRatio = 0.12f;
-    private float eyeHeightRatio = 0.2f;
-    private float eyeTopRatio = 0.3f;
+    private static final float eyeCenterMarginRatio = 0.2f;
+    private static final float eyeWidthRatio = 0.12f;
+    private static final float eyeHeightRatio = 0.2f;
+    private static final float eyeTopRatio = 0.3f;
 
-    private float leftMouthTopRatio = 0.65f;
-    private float leftMouthWidthRatio = 0.44f;
-    private float leftMouthHeightRatio = 0.07f;
+    private static final float leftMouthTopRatio = 0.65f;
+    private static final float leftMouthWidthRatio = 0.44f;
+    private static final float leftMouthHeightRatio = 0.07f;
 
-    private float rightMouthTopRatio = 0.60f;
-    private float rightMouthWidthRatio = 0.48f;
-    private float rightMouthHeightRatio = 0.3f;
+    private static final float rightMouthTopRatio = 0.60f;
+    private static final float rightMouthWidthRatio = 0.48f;
+    private static final float rightMouthHeightRatio = 0.3f;
+
+    private static final float DS_Ratio = 1f;
 
     private Paint mPaint;
 
@@ -127,7 +129,6 @@ public class FaceOffToggleButton extends CompoundButton {
     private float S1;
     private float S2;
     private float D;
-    private float DS_Ratio = 1f;
 
     private float backgroundRadius;
     private float bezierControlWidth1;
@@ -182,8 +183,31 @@ public class FaceOffToggleButton extends CompoundButton {
         TypedArray ta = attrs == null ?
                 null : getContext().obtainStyledAttributes(attrs, R.styleable.FaceOffToggleButton);
         if (ta != null) {
+            
+            mBackgroundColor = ta.getColor(R.styleable.FaceOffToggleButton_foBackgroundColor, DEFAULT_BACKGROUND_COLOR);
+            mLeftBackgroundColor = ta.getColor(R.styleable.FaceOffToggleButton_foLeftBackgroundColor, DEFAULT_LEFT_BACKGROUND_COLOR);
+            mRightBackgroundColor = ta.getColor(R.styleable.FaceOffToggleButton_foRightBackgroundColor, DEFAULT_RIGHT_BACKGROUND_COLOR);
+            mLeftFaceColor = ta.getColor(R.styleable.FaceOffToggleButton_foLeftFaceColor, DEFAULT_LEFT_FACE_COLOR);
+            mRightFaceColor = ta.getColor(R.styleable.FaceOffToggleButton_foRightFaceColor, DEFAULT_RIGHT_FACE_COLOR);
+            mLeftEyeColor = ta.getColor(R.styleable.FaceOffToggleButton_foLeftEyeColor, DEFAULT_LEFT_EYE_COLOR);
+            mRightEyeColor = ta.getColor(R.styleable.FaceOffToggleButton_foRightEyeColor, DEFAULT_RIGHT_EYE_COLOR);
+            mLeftMouthColor = ta.getColor(R.styleable.FaceOffToggleButton_foLeftMouthColor, DEFAULT_LEFT_MOUTH_COLOR);
+            mRightMouthColor = ta.getColor(R.styleable.FaceOffToggleButton_foRightMouthColor, DEFAULT_RIGHT_MOUTH_COLOR);
 
+            mFaceRadius = ta.getDimensionPixelSize(R.styleable.FaceOffToggleButton_foFaceRadius, -1);
+            mWidthRadiusRatio = ta.getFloat(R.styleable.FaceOffToggleButton_foWidthRadiusRatio, -1);
+            mFaceMargin = ta.getDimensionPixelSize(R.styleable.FaceOffToggleButton_foFaceMargin, -1);
 
+            mDuration = ta.getInteger(R.styleable.FaceOffToggleButton_foDuration, DEFAULT_DURATION);
+
+            mMoveToSameStateCallListener = ta.getBoolean(R.styleable.FaceOffToggleButton_foMoveToSameStateCallListener, DEFAULT_MOVE_TO_SAME_STATE_CALL_LISTENER);
+            mDraggable = ta.getBoolean(R.styleable.FaceOffToggleButton_foDraggable, DEFAULT_DRAGGABLE);
+
+            int colorChangeTypeInteger = ta.getInteger(R.styleable.FaceOffToggleButton_foColorChangeType, -1);
+            if (colorChangeTypeInteger != -1) mColorChangeType = ColorChangeType.values()[colorChangeTypeInteger];
+            else mColorChangeType = DEFAULT_COLOR_CHANGE_TYPE;
+
+            mTouchMoveRatioValue = ta.getFloat(R.styleable.FaceOffToggleButton_foTouchMoveRatioValue, DEFAULT_TOUCH_MOVE_RATIO_VALUE);
 
             ta.recycle();
         }
@@ -206,7 +230,6 @@ public class FaceOffToggleButton extends CompoundButton {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-
         setMeasuredDimension(measureWidth(widthMeasureSpec), measureHeight(heightMeasureSpec));
         setup();
     }
@@ -627,12 +650,128 @@ public class FaceOffToggleButton extends CompoundButton {
         setCheckedImmediately(!isChecked(), callListener);
     }
 
+    public int getBackgroundColor() {
+        return mBackgroundColor;
+    }
+
+    public void setBackgroundColor(int mBackgroundColor) {
+        this.mBackgroundColor = mBackgroundColor;
+        invalidate();
+    }
+
+    public int getLeftBackgroundColor() {
+        return mLeftBackgroundColor;
+    }
+
+    public void setLeftBackgroundColor(int mLeftBackgroundColor) {
+        this.mLeftBackgroundColor = mLeftBackgroundColor;
+        invalidate();
+    }
+
+    public int getRightBackgroundColor() {
+        return mRightBackgroundColor;
+    }
+
+    public void setRightBackgroundColor(int mRightBackgroundColor) {
+        this.mRightBackgroundColor = mRightBackgroundColor;
+        invalidate();
+    }
+
+    public int getLeftFaceColor() {
+        return mLeftFaceColor;
+    }
+
+    public void setLeftFaceColor(int mLeftFaceColor) {
+        this.mLeftFaceColor = mLeftFaceColor;
+        invalidate();
+    }
+
+    public int getRightFaceColor() {
+        return mRightFaceColor;
+    }
+
+    public void setRightFaceColor(int mRightFaceColor) {
+        this.mRightFaceColor = mRightFaceColor;
+        invalidate();
+    }
+
+    public int getLeftEyeColor() {
+        return mLeftEyeColor;
+    }
+
+    public void setLeftEyeColor(int mLeftEyeColor) {
+        this.mLeftEyeColor = mLeftEyeColor;
+        invalidate();
+    }
+
+    public int getRightEyeColor() {
+        return mRightEyeColor;
+    }
+
+    public void setRightEyeColor(int mRightEyeColor) {
+        this.mRightEyeColor = mRightEyeColor;
+        invalidate();
+    }
+
+    public int getLeftMouthColor() {
+        return mLeftMouthColor;
+    }
+
+    public void setLeftMouthColor(int mLeftMouthColor) {
+        this.mLeftMouthColor = mLeftMouthColor;
+        invalidate();
+    }
+
+    public int getRightMouthColor() {
+        return mRightMouthColor;
+    }
+
+    public void setRightMouthColor(int mRightMouthColor) {
+        this.mRightMouthColor = mRightMouthColor;
+        invalidate();
+    }
+
+    public float getFaceRadius() {
+        return mFaceRadius;
+    }
+
+    public void setFaceRadius(float mFaceRadius) {
+        this.mFaceRadius = mFaceRadius;
+        requestLayout();
+    }
+
+    public float getWidthRadiusRatio() {
+        return mWidthRadiusRatio;
+    }
+
+    public void setWidthRadiusRatio(float mWidthRadiusRatio) {
+        this.mWidthRadiusRatio = mWidthRadiusRatio;
+        requestLayout();
+    }
+
+    public float getFaceMargin() {
+        return mFaceMargin;
+    }
+
+    public void setFaceMargin(float mFaceMargin) {
+        this.mFaceMargin = mFaceMargin;
+        requestLayout();
+    }
+
     public boolean isDraggable() {
         return mDraggable;
     }
 
     public void setDraggable(boolean draggable) {
         this.mDraggable = draggable;
+    }
+
+    public ColorChangeType getColorChangeType() {
+        return mColorChangeType;
+    }
+
+    public void setColorChangeType(ColorChangeType mColorChangeType) {
+        this.mColorChangeType = mColorChangeType;
     }
 
     public int getDuration() {
@@ -660,7 +799,7 @@ public class FaceOffToggleButton extends CompoundButton {
         mOnStateChangeListener = onStateChangeListener;
     }
 
-    public boolean getMoveToSameStateCallListener() {
+    public boolean isMoveToSameStateCallListener() {
         return mMoveToSameStateCallListener;
     }
 

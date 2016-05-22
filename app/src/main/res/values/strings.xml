@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">FaceOffToggleButtonExample</string>
+    <string name="app_name">Face Off</string>
+    <string name="app_title">Face Off Toggle Button</string>
 </resources>
