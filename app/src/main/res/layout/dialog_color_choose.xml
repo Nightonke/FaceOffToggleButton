@@ -56,7 +56,7 @@
             android:textSize="16sp"
             tools:ignore="HardcodedText" />
 
-        <com.nightonke.jellytogglebuttonexample.MySeekBar
+        <com.nightonke.faceofftogglebuttonexample.MySeekBar
             android:id="@+id/colorR"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -99,7 +99,7 @@
             android:textSize="16sp"
             tools:ignore="HardcodedText" />
 
-        <com.nightonke.jellytogglebuttonexample.MySeekBar
+        <com.nightonke.faceofftogglebuttonexample.MySeekBar
             android:id="@+id/colorG"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -143,7 +143,7 @@
             android:textSize="16sp"
             tools:ignore="HardcodedText" />
 
-        <com.nightonke.jellytogglebuttonexample.MySeekBar
+        <com.nightonke.faceofftogglebuttonexample.MySeekBar
             android:id="@+id/colorB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
