@@ -16,13 +16,25 @@ Toggle button which shows a happy face for checked or unhappy for unchecked.
 Recently, I spent some time to finish a [cute toggle button](https://github.com/Nightonke/JellyToggleButton) and after that, I found a toggle button design with a happy or unhappy face to show the checked status. Check [here](https://github.com/lilei644/LLSwitch) for the IOS version and [here](https://dribbble.com/shots/2706143-Dribbble-Debut-Boring-Funny-Slider-Animation) for the design in Dribbble. Since I have made a similar one, so I just change some codes to create the new FaceOffToggleButton(FOTB). This document is a quite simple one and for more information, please check [JellyToggleButton](https://github.com/Nightonke/JellyToggleButton).
 
 # Guide
-1. [中文文档]()
-2. [Gradle]()
-3. [Demo]()
-4. [Usage Guide]()
-5. [Todo]()
-6. [Versions]()
-7. [License]()
+1. [中文文档](https://github.com/Nightonke/FaceOffToggleButton/blob/master/README-ZH.md)
+2. [Gradle](https://github.com/Nightonke/FaceOffToggleButton#guide)
+3. [Demo](https://github.com/Nightonke/FaceOffToggleButton#demo)
+4. [Usage Guide](https://github.com/Nightonke/FaceOffToggleButton#usage-guide)
+    1. [Background Color](https://github.com/Nightonke/FaceOffToggleButton#background-color)
+    2. [Left & Right Background Color](https://github.com/Nightonke/FaceOffToggleButton#left--right-background-color)
+    3. [Left & Right Face Color](https://github.com/Nightonke/FaceOffToggleButton#left--right-face-color)
+    4. [Left & Right Eye Color](https://github.com/Nightonke/FaceOffToggleButton#left--right-eye-color)
+    5. [Left & Right Mouth Color](https://github.com/Nightonke/FaceOffToggleButton#left--right-mouth-color)
+    6. [Set Checked and Toggle](https://github.com/Nightonke/FaceOffToggleButton#set-checked-and-toggle)
+    7. [Listener](https://github.com/Nightonke/FaceOffToggleButton#listener)
+    8. [Duration](https://github.com/Nightonke/FaceOffToggleButton#duration)
+    9. [Draggable](https://github.com/Nightonke/FaceOffToggleButton#draggable)
+    10. [Color Change Type](https://github.com/Nightonke/FaceOffToggleButton#color-change-type)
+    11. [Dimension](https://github.com/Nightonke/FaceOffToggleButton#dimension)
+    12. [Other Method](https://github.com/Nightonke/FaceOffToggleButton#other-method)
+5. [Todo](https://github.com/Nightonke/FaceOffToggleButton#todo)
+6. [Versions](https://github.com/Nightonke/FaceOffToggleButton#version)
+7. [License](https://github.com/Nightonke/FaceOffToggleButton#license)
 
 # Gradle
 ```
