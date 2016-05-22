@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="FaceOffToggleButton">
+
+        <attr name="backgroundColor" format="color|reference"/>
+        <attr name="leftBackgroundColor" format="color|reference"/>
+        <attr name="rightBackgroundColor" format="color|reference"/>
+        <attr name="leftFaceColor" format="color|reference"/>
+        <attr name="rightFaceColor" format="color|reference"/>
+        <attr name="faceLeftMargin" format="dimension|reference"/>
+        <attr name="faceRightMargin" format="dimension|reference"/>
+        <attr name="faceTopMargin" format="dimension|reference"/>
+        <attr name="faceBottomMargin" format="dimension|reference"/>
+        <attr name="duration" format="integer|reference"/>
+
+    </declare-styleable>
+
+</resources>
