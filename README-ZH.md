@@ -38,12 +38,6 @@
 
 # Gradle
 ```
-repositories {
-    maven {
-        url 'https://dl.bintray.com/nightonke/maven/'
-    }
-}
-...
 dependencies {
     compile 'com.nightonke:faceofftogglebutton:1.0.0'
 }
