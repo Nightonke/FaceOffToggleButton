@@ -18,7 +18,7 @@ import android.view.MotionEvent;
 import android.view.SoundEffectConstants;
 import android.view.ViewConfiguration;
 import android.view.ViewParent;
-import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.CompoundButton;
 
 /**
@@ -51,6 +51,7 @@ public class FaceOffToggleButton extends CompoundButton {
     private static final float DEFAULT_TOUCH_MOVE_RATIO_VALUE = 3.0f;
     private static final float DEFAULT_BEZIER_CONTROL_VALUE = 0.551915024494f;
 
+
     private int mBackgroundColor = DEFAULT_BACKGROUND_COLOR;
     private int mLeftBackgroundColor = DEFAULT_LEFT_BACKGROUND_COLOR;
     private int mRightBackgroundColor = DEFAULT_RIGHT_BACKGROUND_COLOR;
@@ -78,9 +79,10 @@ public class FaceOffToggleButton extends CompoundButton {
     private ValueAnimator mProcessAnimator;
 
     private float mProcess;
+    private float mAnimProcess;
 
     private static final float eyeCenterMarginRatio = 0.2f;
-    private static final float eyeWidthRatio = 0.12f;
+    private static final float eyeWidthRatio = 0.17f;
     private static final float eyeHeightRatio = 0.2f;
     private static final float eyeTopRatio = 0.3f;
 
@@ -88,9 +90,9 @@ public class FaceOffToggleButton extends CompoundButton {
     private static final float leftMouthWidthRatio = 0.44f;
     private static final float leftMouthHeightRatio = 0.07f;
 
-    private static final float rightMouthTopRatio = 0.60f;
-    private static final float rightMouthWidthRatio = 0.48f;
-    private static final float rightMouthHeightRatio = 0.3f;
+    private static final float rightMouthTopRatio = 0.65f;
+    private static final float rightMouthWidthRatio = 0.55f;
+    private static final float rightMouthHeightRatio = 0.18f;
 
     private static final float DS_Ratio = 1f;
 
@@ -183,7 +185,7 @@ public class FaceOffToggleButton extends CompoundButton {
         TypedArray ta = attrs == null ?
                 null : getContext().obtainStyledAttributes(attrs, R.styleable.FaceOffToggleButton);
         if (ta != null) {
-            
+
             mBackgroundColor = ta.getColor(R.styleable.FaceOffToggleButton_foBackgroundColor, DEFAULT_BACKGROUND_COLOR);
             mLeftBackgroundColor = ta.getColor(R.styleable.FaceOffToggleButton_foLeftBackgroundColor, DEFAULT_LEFT_BACKGROUND_COLOR);
             mRightBackgroundColor = ta.getColor(R.styleable.FaceOffToggleButton_foRightBackgroundColor, DEFAULT_RIGHT_BACKGROUND_COLOR);
@@ -204,7 +206,8 @@ public class FaceOffToggleButton extends CompoundButton {
             mDraggable = ta.getBoolean(R.styleable.FaceOffToggleButton_foDraggable, DEFAULT_DRAGGABLE);
 
             int colorChangeTypeInteger = ta.getInteger(R.styleable.FaceOffToggleButton_foColorChangeType, -1);
-            if (colorChangeTypeInteger != -1) mColorChangeType = ColorChangeType.values()[colorChangeTypeInteger];
+            if (colorChangeTypeInteger != -1)
+                mColorChangeType = ColorChangeType.values()[colorChangeTypeInteger];
             else mColorChangeType = DEFAULT_COLOR_CHANGE_TYPE;
 
             mTouchMoveRatioValue = ta.getFloat(R.styleable.FaceOffToggleButton_foTouchMoveRatioValue, DEFAULT_TOUCH_MOVE_RATIO_VALUE);
@@ -336,8 +339,8 @@ public class FaceOffToggleButton extends CompoundButton {
         backgroundRadius = mFaceRadius + mFaceMargin;
         bezierControlWidth1 = 0.25f * mRightFaceMouthRectF.width();
         bezierControlHeight1 = 0.25f * mRightFaceMouthRectF.height();
-        bezierControlWidth2 = 0f;
-        bezierControlHeight2 = mRightFaceMouthRectF.height() * 1.2f;
+        bezierControlWidth2 = mRightFaceMouthRectF.width() * 0.18f;
+        bezierControlHeight2 = mRightFaceMouthRectF.height() * 1.4f;
     }
 
     @Override
@@ -345,10 +348,10 @@ public class FaceOffToggleButton extends CompoundButton {
         super.onDraw(canvas);
 
         float offset = mProcess * S;
-        float leftFaceOffset = mProcess * S / (S1 - R2) * S1;
-        float rightFaceOffset = (mProcess - (S1 - D) / S) * S / (S2 - R2) * S2;
-        if (mProcess >= (S1 - R2) / S) leftFaceOffset = S1;
-        if (mProcess <= (S1 - D) / S) rightFaceOffset = 0;
+        float leftFaceOffset = mAnimProcess * S / (S1 - R2) * S1;
+        float rightFaceOffset = (mAnimProcess - (S1 - D) / S) * S / (S2 - R2) * S2;
+        if (mAnimProcess >= (S1 - R2) / S) leftFaceOffset = S1;
+        if (mAnimProcess <= (S1 - D) / S) rightFaceOffset = 0;
         float controlDistance = backgroundRadius * mBezierControlValue;
 
         // The background of the hole.
@@ -373,16 +376,52 @@ public class FaceOffToggleButton extends CompoundButton {
             mPaint.setStyle(Paint.Style.FILL);
             mPaint.setColor(mRightEyeColor);
             mRightFaceLeftEyeRectF.offset(rightFaceOffset, 0);
-            canvas.drawOval(mRightFaceLeftEyeRectF, mPaint);
             mRightFaceRightEyeRectF.offset(rightFaceOffset, 0);
-            canvas.drawOval(mRightFaceRightEyeRectF, mPaint);
+            if (mAnimProcess <= 1) {
+                canvas.drawOval(mRightFaceLeftEyeRectF, mPaint);
+                canvas.drawOval(mRightFaceRightEyeRectF, mPaint);
+            } else {
+                float center = (mRightFaceLeftEyeRectF.bottom - mRightFaceLeftEyeRectF.top) / 2;
+                float tempProcess = 1 - (mAnimProcess - 1) * 18f;
+
+                float winkLeft = (mRightFaceLeftEyeRectF.bottom - mRightFaceLeftEyeRectF.top) / 2 + mRightFaceLeftEyeRectF.top;
+                float winkRight = (mRightFaceRightEyeRectF.bottom - mRightFaceRightEyeRectF.top) / 2 + mRightFaceRightEyeRectF.top;
+
+                canvas.drawOval(mRightFaceLeftEyeRectF.left, winkLeft - center * tempProcess, mRightFaceLeftEyeRectF.right, winkLeft + center * tempProcess, mPaint);
+                canvas.drawOval(mRightFaceRightEyeRectF.left, winkRight - center * tempProcess, mRightFaceRightEyeRectF.right, winkRight + center * tempProcess, mPaint);
+            }
 
             mPaint.setColor(mRightMouthColor);
             mRightFaceMouthRectF.offset(rightFaceOffset, 0);
             mRightMouthPath.reset();
             mRightMouthPath.moveTo(mRightFaceMouthRectF.left, mRightFaceMouthRectF.top);
-            mRightMouthPath.cubicTo(mRightFaceMouthRectF.left + bezierControlWidth1, mRightFaceMouthRectF.top + bezierControlHeight1, mRightFaceMouthRectF.right - bezierControlWidth1, mRightFaceMouthRectF.top + bezierControlHeight1, mRightFaceMouthRectF.right, mRightFaceMouthRectF.top);
-            mRightMouthPath.cubicTo(mRightFaceMouthRectF.right - bezierControlWidth2, mRightFaceMouthRectF.top + bezierControlHeight2, mRightFaceMouthRectF.left + bezierControlWidth2, mRightFaceMouthRectF.top + bezierControlHeight2, mRightFaceMouthRectF.left, mRightFaceMouthRectF.top);
+            mRightMouthPath.moveTo(mRightFaceMouthRectF.right, mRightFaceMouthRectF.top);
+            float center = (mRightFaceMouthRectF.right + mRightFaceMouthRectF.left) / 2;
+            if (mAnimProcess >= 1) {
+                mRightMouthPath.cubicTo(
+                        center + bezierControlWidth2,
+                        mRightFaceMouthRectF.top + bezierControlHeight2,
+                        center - bezierControlWidth2,
+                        mRightFaceMouthRectF.top + bezierControlHeight2,
+                        mRightFaceMouthRectF.left, mRightFaceMouthRectF.top);
+            } else if (mAnimProcess > 0.9) {
+                float tempProcess = 2 - (1 - mAnimProcess) * 10f;
+                float tempX = bezierControlWidth2 / 2 * tempProcess;
+                float tempY = bezierControlHeight2 / 2 * tempProcess;
+                mRightMouthPath.cubicTo(
+                        center + bezierControlWidth2,
+                        mRightFaceMouthRectF.top + bezierControlHeight2,
+                        center - tempX,
+                        mRightFaceMouthRectF.top + tempY,
+                        mRightFaceMouthRectF.left, mRightFaceMouthRectF.top);
+            } else {
+                mRightMouthPath.cubicTo(
+                        center + bezierControlWidth2,
+                        mRightFaceMouthRectF.top + bezierControlHeight2,
+                        center - bezierControlWidth2 / 2,
+                        mRightFaceMouthRectF.top + bezierControlHeight2 / 2,
+                        mRightFaceMouthRectF.left, mRightFaceMouthRectF.top);
+            }
             mRightMouthPath.close();
             canvas.drawPath(mRightMouthPath, mPaint);
         }
@@ -514,6 +553,7 @@ public class FaceOffToggleButton extends CompoundButton {
     }
 
     private void setProcess(float process, boolean callListener) {
+        this.mAnimProcess = process;
         float tp = process;
         if (tp >= 1) {
             tp = 1;
@@ -631,7 +671,7 @@ public class FaceOffToggleButton extends CompoundButton {
                 super.onAnimationEnd(animation);
             }
         });
-        mProcessAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
+        mProcessAnimator.setInterpolator(new OvershootInterpolator(1.1f));
     }
 
     public void toggle() {
